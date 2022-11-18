@@ -18,7 +18,7 @@ const AdministracaoRestaurantes = () => {
     axios
       .get<IRestaurante[]>("http://localhost:8000/api/v2/restaurantes/")
       .then((resposta) => setRestaurantes(resposta.data));
-  });
+  }, []);
 
   return (
     <TableContainer component={Paper}>
