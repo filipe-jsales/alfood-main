@@ -8,7 +8,13 @@ const FormularioRestaurante = () => {
   const aoSubmeterForm = (evento: React.FormEvent<HTMLFormElement>) => {
     evento.preventDefault();
 
-    axios.post("http://localhost:8000/api/v2/restaurantes/");
+    axios
+      .post("http://localhost:8000/api/v2/restaurantes/", {
+        nome: nomeRestaurante,
+      })
+      .then(() => {
+        alert("Restaurante cadastrado com sucesso");
+      });
     console.log("Preciso enviar dados para a API:");
     console.log(nomeRestaurante);
   };
