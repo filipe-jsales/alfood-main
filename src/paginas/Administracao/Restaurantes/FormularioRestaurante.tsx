@@ -19,6 +19,12 @@ const FormularioRestaurante = () => {
     }
   }, [parametros]);
 
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    console.log(`You have clicked ${count} times`);
+  });
+
   const [nomeRestaurante, setNomeRestaurante] = useState("");
 
   const aoSubmeterForm = (evento: React.FormEvent<HTMLFormElement>) => {
@@ -55,6 +61,9 @@ const FormularioRestaurante = () => {
       />
       <Button type="submit" variant="outlined">
         Salvar
+      </Button>
+      <Button variant="outlined" onClick={() => setCount(count + 1)}>
+        Count
       </Button>
     </form>
   );
