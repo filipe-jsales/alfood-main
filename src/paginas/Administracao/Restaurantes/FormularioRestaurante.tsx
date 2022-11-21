@@ -1,7 +1,7 @@
-import { Button, TextField } from "@mui/material";
-import axios from "axios";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import http from "../../../http";
 import IRestaurante from "../../../interfaces/IRestaurante";
 
 const FormularioRestaurante = () => {
@@ -9,10 +9,8 @@ const FormularioRestaurante = () => {
 
   useEffect(() => {
     if (parametros.id) {
-      axios
-        .get<IRestaurante>(
-          `http://localhost:8000/api/v2/restaurantes/${parametros.id}/`
-        )
+      http
+        .get<IRestaurante>(`restaurantes/${parametros.id}/`)
         .then((resposta) => {
           setNomeRestaurante(resposta.data.nome);
         });
@@ -32,8 +30,8 @@ const FormularioRestaurante = () => {
 
     if (parametros.id) {
       //put
-      axios
-        .put(`http://localhost:8000/api/v2/restaurantes/${parametros.id}/`, {
+      http
+        .put(`restaurantes/${parametros.id}/`, {
           nome: nomeRestaurante,
         })
         .then(() => {
@@ -41,8 +39,8 @@ const FormularioRestaurante = () => {
         });
     } else {
       //post
-      axios
-        .post("http://localhost:8000/api/v2/restaurantes/", {
+      http
+        .post("restaurantes/", {
           nome: nomeRestaurante,
         })
         .then(() => {
@@ -52,22 +50,35 @@ const FormularioRestaurante = () => {
   };
 
   return (
-    <form onSubmit={aoSubmeterForm}>
-      <TextField
-        value={nomeRestaurante}
-        onChange={(evento) => setNomeRestaurante(evento.target.value)}
-        label="Nome do Restaurante"
-        variant="standard"
-      />
-      <Button type="submit" variant="outlined">
-        Salvar
-      </Button>
-      <Button variant="outlined" onClick={() => setCount(count + 1)}>
-        Count
-      </Button>
-    </form>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: 4,
+      }}
+    >
+      <Typography component="h1" variant="h6">
+        Formulário de Restaurantes
+      </Typography>
+      <Box component="form" onSubmit={aoSubmeterForm}>
+        <TextField
+          value={nomeRestaurante}
+          onChange={(evento) => setNomeRestaurante(evento.target.value)}
+          label="Nome do Restaurante"
+          variant="standard"
+          fullWidth
+          required
+        />
+        <Button type="submit" variant="outlined" fullWidth>
+          Salvar
+        </Button>
+        <Button variant="outlined" onClick={() => setCount(count + 1)}>
+          Count
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
 export default FormularioRestaurante;
-//"http://localhost:8000/api/v2/restaurantes/"

@@ -8,31 +8,31 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import http from "../../../http";
 import IRestaurante from "../../../interfaces/IRestaurante";
 
 const AdministracaoRestaurantes = () => {
   const [restaurantes, setRestaurantes] = useState<IRestaurante[]>([]);
 
   useEffect(() => {
-    axios
-      .get<IRestaurante[]>("http://localhost:8000/api/v2/restaurantes/")
+    http
+      .get<IRestaurante[]>("restaurantes/")
       .then((resposta) => setRestaurantes(resposta.data));
   }, []);
 
-  const excluir = (restauranteASerExcluido: IRestaurante) => {
-    axios
+  const excluir = (restauranteAhSerExcluido: IRestaurante) => {
+    http
       .delete(
-        `http://localhost:8000/api/v2/restaurantes/${restauranteASerExcluido.id}/`
+        `restaurantes/${restauranteAhSerExcluido.id}/`
       )
       .then(() => {
-        const listaDeRestaurante = restaurantes.filter(
-          (restaurante) => restaurante.id! == restauranteASerExcluido.id
+        const listaRestaurante = restaurantes.filter(
+          (restaurante) => restaurante.id !== restauranteAhSerExcluido.id
         );
-        setRestaurantes([...listaDeRestaurante]);
+        setRestaurantes([...listaRestaurante]);
       });
   };
 
@@ -41,9 +41,9 @@ const AdministracaoRestaurantes = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Nome do Restaurante</TableCell>
+            <TableCell>Nome</TableCell>
             <TableCell>Editar</TableCell>
-            <TableCell>Remover</TableCell>
+            <TableCell>Excluir</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -51,11 +51,8 @@ const AdministracaoRestaurantes = () => {
             <TableRow key={restaurante.id}>
               <TableCell>{restaurante.nome}</TableCell>
               <TableCell>
-                [
-                <Link to={`/admin/restaurantes/${restaurante.id}`}>
-                  {" "}
-                  Editar{" "}
-                </Link>
+                [{" "}
+                <Link to={`/admin/restaurantes/${restaurante.id}`}>editar</Link>{" "}
                 ]
               </TableCell>
               <TableCell>
@@ -76,4 +73,3 @@ const AdministracaoRestaurantes = () => {
 };
 
 export default AdministracaoRestaurantes;
-//http://localhost:8000/api/v2/restaurantes/
